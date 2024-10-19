@@ -3,9 +3,20 @@
   <ItemGroup>
     <ClCompile Include="cffmpeg_util.cpp" />
     <ClCompile Include="cglobal_ffmpeg_register.cpp" />
+    <ClCompile Include="cdcoder.cpp">
+      <Filter>decoder</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cffmpeg_util.h" />
     <ClInclude Include="cglobal_ffmpeg_register.h" />
+    <ClInclude Include="cdcoder.h">
+      <Filter>decoder</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="decoder">
+      <UniqueIdentifier>{78ea6b26-9af6-4034-bae3-b2b4a8b82e8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
