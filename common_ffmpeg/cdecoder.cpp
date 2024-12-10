@@ -25,7 +25,7 @@ purpose:		camera
 
 //#include "cdecoder.h"
 
-#include "cdcoder.h"
+#include "cdecoder.h"
 #include "clog.h"
 
 namespace chen {
@@ -149,6 +149,14 @@ namespace chen {
 				av_get_media_type_string(m_video_stream_ptr->codecpar->codec_type), m_gpu_index, ffmpeg_util::make_error_string(ret));
 			return false;
 		}
+		::av_dict_free(&codec_opts);
+
+		m_stoped = false;
+
+		m_read_thread = std::thread(&cdecoder::_read_pthread, this);
+		m_decode_thread = std::thread(&cdecoder::_decode_pthread, this);
+		
+
 		return true;
 	}
 	void cdecoder::update(uint32 DataTime)
@@ -156,5 +164,194 @@ namespace chen {
 	}
 	void cdecoder::destroy()
 	{
+	}
+	void cdecoder::_push_packet(AVPacket* packet)
+	{
+		if (!packet)
+		{
+			return;
+		}
+
+		 clock_guard lock(m_packet_lock);
+		m_packet_list.push_back(packet);
+	}
+	AVPacket* cdecoder::_pop_packet()
+	{
+		clock_guard lock(m_packet_lock);
+		if (m_packet_list.empty())
+		{
+			return NULL;
+		}
+		AVPacket* p = m_packet_list.front();
+		m_packet_list.pop_front();
+		return p;
+	}
+	bool cdecoder::_writable_packet_list()
+	{
+		clock_guard lock(m_packet_lock);
+		return m_packet_list.size() < 25;
+	}
+	void cdecoder::_read_pthread()
+	{
+		uint32  d_ms = 1000 / 30;
+		std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+			std::chrono::system_clock::now().time_since_epoch());
+		AVPacket* packet_ptr = NULL;// av_packet_alloc();
+		while (!m_stoped)
+		{
+			if (_writable_packet_list())
+			{
+				if (!packet_ptr)
+				{
+					packet_ptr = av_packet_alloc();
+				}
+				if (!packet_ptr)
+				{
+					continue;
+				}
+				int32 ret = av_read_frame(m_fmt_ctx_ptr, packet_ptr);
+				if (packet_ptr->stream_index != m_video_stream_index)
+				{
+					av_packet_unref(packet_ptr);
+					continue;
+				}
+				// AVERROR(EIO)
+
+				if (ret == AVERROR(EAGAIN))
+				{
+					av_packet_unref(packet_ptr);
+					//	continue;
+				}
+				else if (ret == AVERROR(EIO))
+				{
+					WARNING_EX_LOG("[url = %s] read packet AVERROR(EIO)  failed !!!", m_url.c_str());
+					av_packet_unref(packet_ptr);
+					m_stoped = true;
+				}
+				else if (ret == AVERROR_EOF)
+				{
+
+					av_packet_unref(packet_ptr);
+
+
+				}
+				else if (ret < 0)
+				{
+					av_packet_unref(packet_ptr);
+					//continue;
+				}
+				else
+				{
+					_push_packet(packet_ptr);
+					packet_ptr = NULL;
+				}
+			}
+
+
+			std::chrono::milliseconds encoder_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+				std::chrono::system_clock::now().time_since_epoch());
+			std::chrono::milliseconds  diff_ms = encoder_ms - ms;
+
+			if (diff_ms.count() < d_ms)
+			{
+				std::this_thread::sleep_for(std::chrono::milliseconds(d_ms - diff_ms.count()));
+			}
+			//else 
+			{
+				ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+					std::chrono::system_clock::now().time_since_epoch());
+				// ms += std::chrono::milliseconds(diff_ms.count() - d_ms);
+			}
+		}
+		if (packet_ptr)
+		{
+			av_packet_free(&packet_ptr);
+			packet_ptr = NULL;
+		}
+
+	}
+	void cdecoder::_decode_pthread()
+	{
+		AVFrame* picture_ptr =  ::av_frame_alloc();
+		while (!m_stoped)
+		{
+			if (!m_fmt_ctx_ptr || !m_video_stream_ptr || !m_codec_ctx_ptr)
+			{
+				continue;
+				//return false;
+			}
+			AVPacket* packet_ptr = _pop_packet();
+			if (!packet_ptr)
+			{
+				std::this_thread::sleep_for(std::chrono::milliseconds(10));
+				continue;
+			}
+			av_frame_unref(picture_ptr);
+			// Decode video frame
+ 
+			if (avcodec_send_packet(m_codec_ctx_ptr, packet_ptr) < 0)
+			{
+				av_packet_unref(packet_ptr);
+				av_packet_free(&packet_ptr);
+				packet_ptr = NULL;
+				continue;
+			}
+			if (packet_ptr)
+			{
+
+				av_packet_unref(packet_ptr);
+				av_packet_free(&packet_ptr);
+				packet_ptr = NULL;
+			}
+			int32 ret = avcodec_receive_frame(m_codec_ctx_ptr, picture_ptr);
+ 
+
+			if (ret >= 0)
+			{
+				if (m_callback_ptr)
+				{
+					m_callback_ptr(picture_ptr);
+				}
+				//picture_pts = picture->best_effort_timestamp;
+				//std::lock_guard<std::mutex> lock(m_packet_list_lock);
+				//if (m_packet_list.empty())
+				//{
+				/*if (m_picture_pts == AV_NOPTS_VALUE)
+				{
+					m_picture_pts = m_picture_ptr->CV_FFMPEG_PTS_FIELD != AV_NOPTS_VALUE
+						&& m_picture_ptr->CV_FFMPEG_PTS_FIELD != 0
+						? m_picture_ptr->CV_FFMPEG_PTS_FIELD : m_picture_ptr->pkt_dts;
+				}
+				
+				valid = true;*/
+				//break;
+				/*	}
+					else
+					{
+						av_frame_unref(m_picture_ptr);
+						continue;
+					}
+					 */
+
+
+				NORMAL_EX_LOG("new frame");
+			}
+			else if (ret == AVERROR(EAGAIN))
+			{
+				//av_frame_unref(m_picture_ptr);
+				//std::this_thread::sleep_for(std::chrono::milliseconds(5));
+				continue;
+			}
+			else
+			{
+				//av_frame_unref(m_picture_ptr);
+				//count_errs++;
+				//if (count_errs > max_number_of_attempts)
+				/*{
+					break;
+				}*/
+				std::this_thread::sleep_for(std::chrono::milliseconds(5));
+			}
+		}
 	}
 }

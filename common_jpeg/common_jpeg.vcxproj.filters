@@ -13,36 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="server">
-      <UniqueIdentifier>{88b7f0b6-30ae-4d0b-8f43-be89fbced963}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="cfg">
-      <UniqueIdentifier>{73b69f7d-e072-4e65-8906-81d1ed4c26fe}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="nvjpeg2k_encode.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ctransmission_gateway_server.cpp">
-      <Filter>server</Filter>
-    </ClCompile>
-    <ClCompile Include="ccfg.cpp">
-      <Filter>cfg</Filter>
-    </ClCompile>
-    <ClCompile Include="cwebsocket_wan_server.cpp">
-      <Filter>server</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ctransmission_gateway_server.h">
-      <Filter>server</Filter>
-    </ClInclude>
-    <ClInclude Include="ccfg.h">
-      <Filter>cfg</Filter>
-    </ClInclude>
-    <ClInclude Include="cwebsocket_wan_server.h">
-      <Filter>server</Filter>
+    <ClInclude Include="nvjpeg2k_encode.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -90,7 +90,9 @@ namespace chen {
 		//m_ws.binary(true);
 		//m_ws.binary();
 		//m_ws.text(m_ws.got_text());
-		m_ws.binary(true);
+		//m_ws.binary(true);
+		// TODO@chensong 
+		m_ws.text(m_ws.got_text());
 		m_ws.async_write(
 			boost::asio::buffer( m_sending_buffer_list.front(), m_sending_buffer_list.front().size()),
 			boost::asio::bind_executor(
@@ -266,8 +268,9 @@ namespace chen {
 			m_sending_buffer_list.pop_front();
 			//m_ws.text(m_ws.got_text());
 			//m_ws.binary();
-			// 
-			m_ws.binary(true);
+			//
+			m_ws.text(m_ws.got_text());
+			//m_ws.binary(true);
 			//m_ws.write();
 			//m_ws.binary();
 			//m_ws.got_binary();
@@ -290,7 +293,8 @@ namespace chen {
 				m_sending_buffer_list.swap(m_send_buffer_list);
 			}
 		//	m_ws.text(m_ws.got_text());
-			m_ws.binary(true);
+			m_ws.text(m_ws.got_text());
+		//	m_ws.binary(true);
 			m_ws.async_write(
 				boost::asio::buffer(m_sending_buffer_list.front(), m_sending_buffer_list.front().size()),
 				boost::asio::bind_executor(

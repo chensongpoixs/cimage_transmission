@@ -1,10 +1,11 @@
-﻿/***********************************************************************************************
-created: 		2023-11-18
+﻿/********************************************************************
+created:	2019-05-07
 
-author:			chensong
+author:		chensong
 
-purpose:		camera
+level:		网络层
 
+purpose:	网络数据的收发
 输赢不重要，答案对你们有什么意义才重要。
 
 光阴者，百代之过客也，唯有奋力奔跑，方能生风起时，是时代造英雄，英雄存在于时代。或许世人道你轻狂，可你本就年少啊。 看护好，自己的理想和激情。
@@ -20,84 +21,77 @@ purpose:		camera
 我叫他本心猎手。他可能是和宇宙同在的级别 但是我并不害怕，我仔细回忆自己平淡的一生 寻找本心猎手的痕迹。
 沿着自己的回忆，一个个的场景忽闪而过，最后发现，我的本心，在我写代码的时候，会回来。
 安静，淡然，代码就是我的一切，写代码就是我本心回归的最好方式，我还没找到本心猎手，但我相信，顺着这个线索，我一定能顺藤摸瓜，把他揪出来。
-************************************************************************************************/
+*********************************************************************/
 
 
-#ifndef _C_DECODER_H_
-#define _C_DECODER_H_
-
-#include "cffmpeg_util.h"
-#include "cffmpeg_util.h"
-#include <list>
+#ifndef _C_WEBSOCKET_WAN_SERVER_H_
+#define _C_WEBSOCKET_WAN_SERVER_H_
+#include "cnoncopytable.h"
 #include "cnet_type.h"
-#include <thread>
+#include <list>
+#include <json/json.h>
+#include "cwebsocket_server_mgr.h"
+//#include "cwebsocket_wan_session.h"
+#include <set>
 namespace chen {
-
-
-
-	class cdecoder
+	class cwebsocket_wan_server
 	{
+	private:
+		typedef   std::mutex						clock_type;
 	public:
-		explicit cdecoder()
-		: m_stoped(false)
-		, m_url("")
-		, m_gpu_index(0)
-		, m_fmt_ctx_ptr(NULL)
-		, m_codec_ctx_ptr(NULL)
-		, m_video_stream_index(-1)
-		, m_video_stream_ptr(NULL){}
-
-
-		virtual ~cdecoder();
-
+		explicit cwebsocket_wan_server()
+			: m_websocket_server_ptr(NULL)
+			, m_stoped(false)
+			, m_max_session_num(0)
+	//		, m_session_map()
+			, m_update_timer(0)
+			, m_sessions(){}
+		virtual ~cwebsocket_wan_server();
 
 	public:
-		bool init(const char * url, uint32 gpu_index);
-		void update(uint32 DataTime);
+		bool init();
+
 		void destroy();
-
+	public:
+		bool startup();
+	public:
+		void update(uint32 uDeltaTime);
+		void shutdown();
+	public:
+		void on_connect(uint64_t session_id, const char* ip, uint16_t port);
+		void on_msg_receive(uint64_t session_id, const void* p, uint32 size);
+		void on_disconnect(uint64_t session_id);
+	public:
+		bool send_msg(uint32 session_id, uint16 msg_id, const void* p, uint32 size);
 
 
 	public:
+		void broadcast_msg(uint16 msg_id, const void * p, uint32 size);
+	public:
 
-
-
-		bool			m_stoped;
-		std::string		m_url;
-		uint32			m_gpu_index;
-		
-		
-		AVFormatContext* m_fmt_ctx_ptr;
-
-		// 解码
-		AVCodecContext* m_codec_ctx_ptr;
-		
-		// 视频流索引
-		int32_t	   m_video_stream_index;
-		// 视频流
-		AVStream* m_video_stream_ptr;
-		
-
+	//	cwebsocket_wan_session* get_session(uint64 index);
+		//cwan_session*  get_session(uint32 index, uint32 session_id);
+	public:
+		/**
+		* ¹Ø±ÕÖ¸¶¨Á¬½Ó
+		* @param session_id	Á¬½Óid
+		*/
+		void close(uint32 session_id);
+	private:
+		bool index_valid(uint32 index) { return index < m_max_session_num; }
+		uint32 get_session_index(uint32 session_id) { return session_id & 0X0000FFFF; }
+	private:
+		cwebsocket_server_mgr*		m_websocket_server_ptr;
+		bool						m_stoped;
+		uint32						m_max_session_num;
+		//std::map<uint64, cwebsocket_wan_session*>				m_session_map;
+		uint32						m_update_timer;
+		clock_type					m_session_lock;
+		std::set<uint32>			m_sessions;
 	};
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	extern cwebsocket_wan_server  g_websocket_wan_server;
 }
 
-#endif //_C_DECODER_H_
+#endif // _C_WEBSOCKET_WAN_SSERVER_H_

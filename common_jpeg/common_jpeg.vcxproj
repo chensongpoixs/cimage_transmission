@@ -21,9 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{81b58935-d0dd-4202-b8f5-69e052b15c11}</ProjectGuid>
-    <RootNamespace>ctransmissiongateway</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <ProjectGuid>{e61befe4-72a7-4754-bba1-2084bf4ce2a4}</ProjectGuid>
+    <RootNamespace>commonjpeg</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -40,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -78,17 +78,15 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\common_jpeg;C:\Program Files\NVIDIA nvJPEG2K\v0.8\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include;$(C_INCLUDE)/webrtc/include\third_party\libyuv\include;$(C_INCLUDE)/webrtc/m110_include\third_party\libjpeg_turbo;$(C_INCLUDE)\ffmpeg-6.1\include\libxml2;..\common_sip;..\common_websocket;$(C_INCLUDE)/protobuf/include;$(C_INCLUDE)\boost_1_66_0\include;..\clib;..\common_execl;..\common_ffmpeg;..\common;..\common_web;$(C_INCLUDE)\json\include;$(C_INCLUDE)\ffmpeg-6.1\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\NVIDIA nvJPEG2K\v0.8\lib\12;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\lib\x64;$(C_INCLUDE)\webrtc\lib\x64\m110_release;$(C_INCLUDE)\boost_1_66_0\lib;$(C_INCLUDE)\json\lib\x64\debug;$(ProjectDir)..\lib\$(Platform)\$(Configuration);$(C_INCLUDE)\ffmpeg-6.1\lib\x64;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>..\lib\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)..\vsout\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>C:\Program Files\NVIDIA nvJPEG2K\v0.8\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include;..\clib;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>..\lib\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)..\vsout\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>..\common_jpeg;C:\Program Files\NVIDIA nvJPEG2K\v0.8\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>C:\Program Files\NVIDIA nvJPEG2K\v0.8\lib\12;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>C:\Program Files\NVIDIA nvJPEG2K\v0.8\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include;..\clib;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -122,14 +120,13 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32_LEAN_AND_MEAN;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>cudart_static.lib;cuda.lib;common_jpeg.lib;nvjpeg2k.lib;turbojpeg.lib;simd.lib;simd_asm.lib;libjpeg.lib;webrtc.lib;Dnsapi.lib;Qwave.lib;delayimp.lib;ws2_32.lib;common_websocket.lib;D:\dep\webrtc\lib\x64\release\libyuv_internal.lib;common_ffmpeg.lib;libboost_atomic-vc141-mt-gd-x64-1_66.lib;libboost_chrono-vc141-mt-gd-x64-1_66.lib;libboost_container-vc141-mt-gd-x64-1_66.lib;libboost_context-vc141-mt-gd-x64-1_66.lib;libboost_coroutine-vc141-mt-gd-x64-1_66.lib;libboost_date_time-vc141-mt-gd-x64-1_66.lib;libboost_exception-vc141-mt-gd-x64-1_66.lib;libboost_fiber-vc141-mt-gd-x64-1_66.lib;libboost_filesystem-vc141-mt-gd-x64-1_66.lib;libboost_graph-vc141-mt-gd-x64-1_66.lib;libboost_iostreams-vc141-mt-gd-x64-1_66.lib;libboost_locale-vc141-mt-gd-x64-1_66.lib;libboost_log-vc141-mt-gd-x64-1_66.lib;libboost_log_setup-vc141-mt-gd-x64-1_66.lib;libboost_math_c99-vc141-mt-gd-x64-1_66.lib;libboost_math_c99f-vc141-mt-gd-x64-1_66.lib;libboost_math_c99l-vc141-mt-gd-x64-1_66.lib;libboost_math_tr1-vc141-mt-gd-x64-1_66.lib;libboost_math_tr1f-vc141-mt-gd-x64-1_66.lib;libboost_math_tr1l-vc141-mt-gd-x64-1_66.lib;libboost_prg_exec_monitor-vc141-mt-gd-x64-1_66.lib;libboost_program_options-vc141-mt-gd-x64-1_66.lib;libboost_python-vc141-mt-gd-x64-1_66.lib;libboost_random-vc141-mt-gd-x64-1_66.lib;libboost_regex-vc141-mt-gd-x64-1_66.lib;libboost_serialization-vc141-mt-gd-x64-1_66.lib;libboost_signals-vc141-mt-gd-x64-1_66.lib;libboost_stacktrace_noop-vc141-mt-gd-x64-1_66.lib;libboost_stacktrace_windbg-vc141-mt-gd-x64-1_66.lib;libboost_stacktrace_windbg_cached-vc141-mt-gd-x64-1_66.lib;libboost_system-vc141-mt-gd-x64-1_66.lib;libboost_test_exec_monitor-vc141-mt-gd-x64-1_66.lib;libboost_thread-vc141-mt-gd-x64-1_66.lib;libboost_timer-vc141-mt-gd-x64-1_66.lib;libboost_type_erasure-vc141-mt-gd-x64-1_66.lib;libboost_unit_test_framework-vc141-mt-gd-x64-1_66.lib;lib_json.lib;libboost_wave-vc141-mt-gd-x64-1_66.lib;libboost_wserialization-vc141-mt-gd-x64-1_66.lib;common_web.lib;clib.lib;libassd.lib;libavfilterd.lib;libblurayd.lib;libcdiod.lib;libfribidid.lib;libgmpd.lib;libharfbuzzd.lib;libiconvd.lib;libmfxd.lib;libnettled.lib;libpostprocd.lib;libspeexd.lib;libswscaled.lib;libvpxd.lib;libxml2d.lib;libavcodecd.lib;libavformatd.lib;libbz2d.lib;libfontconfigd.lib;libgcryptd.lib;libgnutlsd.lib;libhogweedd.lib;libilbcd.lib;libmodplugd.lib;liboggd.lib;libsdl2d.lib;libsshd.lib;libtheorad.lib;libx264d.lib;libxvidcored.lib;libavdeviced.lib;libavutild.lib;libcdio_paranoiad.lib;libfreetyped.lib;libgmed.lib;libgpg-errord.lib;liblzmad.lib;libmp3lamed.lib;libopusd.lib;libsoxrd.lib;libswresampled.lib;libvorbisd.lib;libx265d.lib;libzlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -138,7 +135,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -147,19 +144,13 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>cudart_static.lib;cuda.lib;common_jpeg.lib;nvjpeg2k.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ccfg.cpp" />
-    <ClCompile Include="ctransmission_gateway_server.cpp" />
-    <ClCompile Include="cwebsocket_wan_server.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="nvjpeg2k_encode.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ccfg.h" />
-    <ClInclude Include="ctransmission_gateway_server.h" />
-    <ClInclude Include="cwebsocket_wan_server.h" />
+    <ClInclude Include="nvjpeg2k_encode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

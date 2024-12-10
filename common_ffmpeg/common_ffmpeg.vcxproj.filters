@@ -3,14 +3,14 @@
   <ItemGroup>
     <ClCompile Include="cffmpeg_util.cpp" />
     <ClCompile Include="cglobal_ffmpeg_register.cpp" />
-    <ClCompile Include="cdcoder.cpp">
+    <ClCompile Include="cdecoder.cpp">
       <Filter>decoder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cffmpeg_util.h" />
     <ClInclude Include="cglobal_ffmpeg_register.h" />
-    <ClInclude Include="cdcoder.h">
+    <ClInclude Include="cdecoder.h">
       <Filter>decoder</Filter>
     </ClInclude>
   </ItemGroup>

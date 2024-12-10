@@ -4,6 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.34114.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ctransmission_gateway", "ctransmission_gateway\ctransmission_gateway.vcxproj", "{81B58935-D0DD-4202-B8F5-69E052B15C11}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5F34B031-F7AD-4498-B5D5-CBA4C0E83ADA} = {5F34B031-F7AD-4498-B5D5-CBA4C0E83ADA}
+		{7ADECA32-3EA3-4FD9-87BD-217EA7037E43} = {7ADECA32-3EA3-4FD9-87BD-217EA7037E43}
+		{0B19A658-E79F-4A0B-BFF6-45ED48D25ADF} = {0B19A658-E79F-4A0B-BFF6-45ED48D25ADF}
+		{E61BEFE4-72A7-4754-BBA1-2084BF4CE2A4} = {E61BEFE4-72A7-4754-BBA1-2084BF4CE2A4}
+		{AEE29FF4-A287-41F3-8752-DD851FB52F30} = {AEE29FF4-A287-41F3-8752-DD851FB52F30}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "clib", "clib\clib.vcxproj", "{5F34B031-F7AD-4498-B5D5-CBA4C0E83ADA}"
 EndProject
@@ -12,6 +19,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common_web", "common_web\common_web.vcxproj", "{7ADECA32-3EA3-4FD9-87BD-217EA7037E43}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common_websocket", "common_websocket\common_websocket.vcxproj", "{AEE29FF4-A287-41F3-8752-DD851FB52F30}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common_jpeg", "common_jpeg\common_jpeg.vcxproj", "{E61BEFE4-72A7-4754-BBA1-2084BF4CE2A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +70,14 @@ Global
 		{AEE29FF4-A287-41F3-8752-DD851FB52F30}.Release|x64.Build.0 = Release|x64
 		{AEE29FF4-A287-41F3-8752-DD851FB52F30}.Release|x86.ActiveCfg = Release|Win32
 		{AEE29FF4-A287-41F3-8752-DD851FB52F30}.Release|x86.Build.0 = Release|Win32
+		{E61BEFE4-72A7-4754-BBA1-2084BF4CE2A4}.Debug|x64.ActiveCfg = Debug|x64
+		{E61BEFE4-72A7-4754-BBA1-2084BF4CE2A4}.Debug|x64.Build.0 = Debug|x64
+		{E61BEFE4-72A7-4754-BBA1-2084BF4CE2A4}.Debug|x86.ActiveCfg = Debug|Win32
+		{E61BEFE4-72A7-4754-BBA1-2084BF4CE2A4}.Debug|x86.Build.0 = Debug|Win32
+		{E61BEFE4-72A7-4754-BBA1-2084BF4CE2A4}.Release|x64.ActiveCfg = Release|x64
+		{E61BEFE4-72A7-4754-BBA1-2084BF4CE2A4}.Release|x64.Build.0 = Release|x64
+		{E61BEFE4-72A7-4754-BBA1-2084BF4CE2A4}.Release|x86.ActiveCfg = Release|Win32
+		{E61BEFE4-72A7-4754-BBA1-2084BF4CE2A4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
